@@ -1,0 +1,47 @@
+# Knowledge Islands repository configuration.
+# Its presence declares conformance with the Knowledge Islands repository standard.
+
+[repo]
+harnesses = ["knowledgeislands/ki-agentic-harness"]
+
+[skills.ki-repo]
+repository = "https://github.com/knowledgeislands/mcp-housekeeping-chatgpt"
+title = "mcp-housekeeping-chatgpt"
+description = "MCP for read-only discovery and faithful acquisition of opaque local ChatGPT session records."
+repo_code = "MCP-HG"
+supported_runtimes = ["chatgpt-codex"]
+visibility = "private"
+
+[skills.ki-authoring]
+[skills.ki-engineering]
+[skills.ki-repo-project]
+[skills.ki-repo-mcp]
+[skills.ki-trades]
+
+[skills.ki-trades.routes."knowledgeislands/ki-agentic-harness"]
+import = ["knowledge"]
+
+[skills.ki-work]
+adapter = "roadmap"
+
+[skills.ki-work-roadmap]
+themes = ["foundation-tooling", "operations"]
+
+[skills.ki-work-roadmap.areas]
+FND = "foundation-tooling"
+OPS = "operations"
+
+[skills.ki-tokenomics]
+[skills.ki-housekeeping-chatgpt]
+[skills.ki-tokenomics-codex]
+[skills.ki-git]
+[skills.ki-decision-records]
+[skills.ki-agora]
+
+[skills.ki-agora.memberships.ki-all]
+home = "https://github.com/knowledgeislands/ki-agentic-harness"
+role = "maintainer"
+
+[skills.ki-agora.memberships.ki-mcps]
+home = "https://github.com/knowledgeislands/ki-agentic-harness"
+role = "maintainer"

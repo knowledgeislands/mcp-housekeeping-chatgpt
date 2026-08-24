@@ -1,0 +1,86 @@
+{
+  "name": "@knowledgeislands/mcp-housekeeping-chatgpt",
+  "description": "MCP provider adapter for discovering and faithfully reading opaque local ChatGPT session records.",
+  "version": "0.1.0",
+  "author": "kris@kris.me.uk",
+  "bin": {
+    "mcp-housekeeping-chatgpt": "dist/mcp-server/index.js"
+  },
+  "bugs": {
+    "url": "https://github.com/knowledgeislands/mcp-housekeeping-chatgpt/issues"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.10",
+    "@types/node": "^26.2.0",
+    "@vitest/coverage-v8": "^4.1.11",
+    "husky": "^9.1.7",
+    "knip": "^6.32.2",
+    "lint-staged": "^17.3.0",
+    "mcporter": "^0.13.7",
+    "rumdl": "^0.2.60",
+    "syncpack": "^15.3.0",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/mcp-server/index.d.ts",
+      "import": "./dist/mcp-server/index.js"
+    },
+    "./config": {
+      "types": "./dist/config/index.d.ts",
+      "import": "./dist/config/index.js"
+    },
+    "./chatgpt": {
+      "types": "./dist/main/chatgpt/local-store.d.ts",
+      "import": "./dist/main/chatgpt/local-store.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/knowledgeislands/mcp-housekeeping-chatgpt#readme",
+  "keywords": [
+    "chatgpt",
+    "housekeeping",
+    "knowledge-islands",
+    "mcp",
+    "sessions"
+  ],
+  "license": "MIT",
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,jsonc}": [
+      "bunx @biomejs/biome check --write --no-errors-on-unmatched"
+    ],
+    "*.md": [
+      "bunx rumdl check --fix"
+    ]
+  },
+  "main": "dist/mcp-server/index.js",
+  "packageManager": "bun@1.3.14",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knowledgeislands/mcp-housekeeping-chatgpt.git"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "clean": "rm -rf {dist,node_modules}",
+    "ki:deps:update": "bun update --latest",
+    "ki:server:mcp:dev": "NODE_ENV=development bun --watch src/mcp-server/index.ts",
+    "ki:server:mcp:inspect": "NODE_ENV=development bunx @modelcontextprotocol/inspector bun src/mcp-server/index.ts",
+    "ki:server:mcp:start": "bun run build && node dist/mcp-server/index.js",
+    "prepare": "husky",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest"
+  },
+  "type": "module"
+}
