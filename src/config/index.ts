@@ -1,4 +1,5 @@
 import { strict as assert } from 'node:assert'
+import { homedir } from 'node:os'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -54,7 +55,10 @@ const nonNegativeInt = (value: string | undefined, fallback: number, name: strin
 export const loadConfig = (env: NodeJS.ProcessEnv = process.env): Config => {
   hydrateEnvFromFiles()
   assert(env.MCP_HOUSEKEEPING_CHATGPT_PATH, 'MCP_HOUSEKEEPING_CHATGPT_PATH environment variable must be set')
-  const housekeepingPath = path.resolve(env.MCP_HOUSEKEEPING_CHATGPT_PATH)
+  const configuredPath = env.MCP_HOUSEKEEPING_CHATGPT_PATH
+  const housekeepingPath = path.resolve(
+    configuredPath === '~' ? homedir() : configuredPath.replace(/^~\//, `${homedir()}/`)
+  )
   return {
     housekeepingPath,
     accessLevel: accessLevel(env.MCP_HOUSEKEEPING_CHATGPT_ACCESS_LEVEL),
