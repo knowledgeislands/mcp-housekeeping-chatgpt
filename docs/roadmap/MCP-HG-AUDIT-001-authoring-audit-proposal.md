@@ -1,3 +1,16 @@
+---
+id: 
+area: AUDIT
+title: Conformance findings proposal
+theme: governance
+horizon: future
+status: draft
+candidate: true
+blocks: []
+blocked_by: []
+baseline_ref: null
+---
+
 # MCP-HG-AUDIT-001 — Authoring audit proposal
 
 Status: Discussion draft.
