@@ -14,6 +14,8 @@ visibility = "private"
 
 [skills.ki-authoring]
 [skills.ki-engineering]
+
+dependency_holds = ["zod — 4.5.4 is incompatible with @modelcontextprotocol/sdk 1.30.0 schema types"]
 [skills.ki-repo-project]
 [skills.ki-repo-mcp]
 [skills.ki-trades]
