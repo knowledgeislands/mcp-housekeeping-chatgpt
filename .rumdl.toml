@@ -1,0 +1,16 @@
+[global]
+exclude = [
+  "node_modules",
+  "dist",
+  "reports",
+  "src/generated",
+  ".claude/commands",
+  ".claude/skills",
+  ".claude/agents",
+  ".agents/skills",
+]
+
+[MD013]
+line-length = 100000
+reflow = true
+reflow-mode = "normalize"

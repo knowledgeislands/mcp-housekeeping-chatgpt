@@ -1,0 +1,8 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["src/mcp-server/index.ts!", "src/config/index.ts!", "src/main/chatgpt/local-store.ts!"],
+  "project": ["src/**/*.ts"],
+  "ignore": ["src/generated/**", ".claude/skills/**", ".agents/skills/**"],
+  "ignoreDependencies": ["lint-staged", "syncpack"],
+  "ignoreExportsUsedInFile": true
+}

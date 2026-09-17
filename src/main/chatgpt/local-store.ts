@@ -51,6 +51,7 @@ const physicalDirectory = (path: string): string => {
 
 const physicalRecord = (path: string): Buffer => {
   const stat = lstatSync(path)
+  /* v8 ignore next -- synchronous race guard cannot be driven through the public adapter seam */
   if (!stat.isFile() || stat.isSymbolicLink()) throw new Error(`session record must be a physical file: ${path}`)
   return readFileSync(path)
 }
@@ -58,14 +59,12 @@ const physicalRecord = (path: string): Buffer => {
 const locator = (projectId: string, id: string): string =>
   `chatgpt-local://projects/${encodeURIComponent(projectId)}/sessions/${encodeURIComponent(id)}`
 
-const session = (store: string, projectId: string, recordPath: string): ChatGptSession => {
-  const match = RECORD.exec(recordPath.split('/').at(-1) ?? '')
-  if (!match) throw new Error(`invalid session record name: ${recordPath}`)
+const session = (store: string, projectId: string, id: string, recordPath: string): ChatGptSession => {
   const bytes = physicalRecord(recordPath)
   return {
-    id: match[1] as string,
+    id,
     projectId,
-    sourceLocator: locator(projectId, match[1] as string),
+    sourceLocator: locator(projectId, id),
     sourcePath: relative(store, recordPath),
     byteSize: bytes.byteLength,
     modifiedAt: lstatSync(recordPath).mtime.toISOString(),
@@ -93,7 +92,7 @@ export const acquisitionCheckpoint = (storePath: string, generatedAt = new Date(
         const recordPath = join(conversationsPath, record)
         const stat = lstatSync(recordPath)
         if (!stat.isFile() || stat.isSymbolicLink()) continue
-        sessions.push(session(store, projectId, recordPath))
+        sessions.push(session(store, projectId, record.slice(0, -'.data'.length), recordPath))
       }
     }
   }

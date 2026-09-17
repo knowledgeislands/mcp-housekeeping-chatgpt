@@ -38,6 +38,7 @@ Thumbs.db
 logs
 *.log
 *.tsbuildinfo
+reports/
 *.lock
 !bun.lock
 

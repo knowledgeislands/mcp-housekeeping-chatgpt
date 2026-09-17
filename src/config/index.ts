@@ -1,9 +1,6 @@
 import { strict as assert } from 'node:assert'
 import { homedir } from 'node:os'
 import * as path from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-const PACKAGE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
 
 export type AccessLevel = 'read' | 'write' | 'destructive'
 export const ACCESS_LEVELS: readonly AccessLevel[] = ['read', 'write', 'destructive'] as const
@@ -17,19 +14,6 @@ export interface Config {
   auditLogPath: string
   auditLogMaxBytes: number
   auditLogKeep: number
-}
-
-const hydrateEnvFromFiles = (): void => {
-  const files = ['.env.local']
-  if (process.env.NODE_ENV) files.push(`.env.${process.env.NODE_ENV}`)
-  files.push('.env')
-  for (const file of files) {
-    try {
-      process.loadEnvFile(path.join(PACKAGE_ROOT, file))
-    } catch {
-      // Missing local files are normal; MCP-injected values take precedence.
-    }
-  }
 }
 
 const accessLevel = (value: string | undefined): AccessLevel => {
@@ -53,7 +37,6 @@ const nonNegativeInt = (value: string | undefined, fallback: number, name: strin
 }
 
 export const loadConfig = (env: NodeJS.ProcessEnv = process.env): Config => {
-  hydrateEnvFromFiles()
   assert(env.MCP_HOUSEKEEPING_CHATGPT_PATH, 'MCP_HOUSEKEEPING_CHATGPT_PATH environment variable must be set')
   const configuredPath = env.MCP_HOUSEKEEPING_CHATGPT_PATH
   const housekeepingPath = path.resolve(

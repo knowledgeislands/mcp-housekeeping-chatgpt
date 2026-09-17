@@ -5,12 +5,11 @@ area: FND
 theme: foundation-tooling
 horizon: future
 status: draft
-candidate: true
 blocks: []
 blocked_by: []
 baseline_ref: null
 created_at: 2026-09-04T08:54:05Z
-updated_at: 2026-09-04T08:54:05Z
+updated_at: 2026-09-17T17:11:17Z
 ---
 
 ## Goal
