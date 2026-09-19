@@ -4,12 +4,12 @@ title: Conform engineering baseline
 area: FND
 theme: foundation-tooling
 horizon: next
-status: awaiting-review
+status: done
 blocks: []
 blocked_by: []
 baseline_ref: 5c13237b98e916322e1f21fc46d25b6884ed939c
 created_at: 2026-09-02T21:56:13Z
-updated_at: 2026-09-17T17:11:49Z
+updated_at: 2026-09-19T17:44:00Z
 ---
 
 ## Goal
@@ -111,6 +111,10 @@ The provider remains read-only and opaque: no decoder, deletion, source mutation
 ### Mini recap
 
 The engineering baseline is complete and stable enough for human acceptance; the next acquisition action is a runtime restart and live discovery recheck from the Harness item.
+
+## Done
+
+Accepted 2026-09-19 by the repository owner on the review packet above.
 
 ## Discussion
 
