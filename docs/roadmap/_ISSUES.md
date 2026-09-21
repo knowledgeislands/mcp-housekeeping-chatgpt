@@ -1,10 +1,10 @@
 ---
-areas: { FND: 3, OPS: 1 }
+areas: { FND: 4, OPS: 1 }
 ---
 
 # Roadmap issue ledger
 
 This ledger reserves fixed issuing-area namespaces. Allocate the next work item in its area as one greater than that area's high-water mark; never lower a value or reuse an issued number after a record is pruned. Areas are not mutable themes or groups.
 
-- `FND` reserves through `003`.
+- `FND` reserves through `004`.
 - `OPS` reserves through `001`.
