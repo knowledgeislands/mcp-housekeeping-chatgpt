@@ -1,6 +1,6 @@
 {
   "name": "@knowledgeislands/mcp-housekeeping-chatgpt",
-  "description": "MCP provider adapter for discovering and faithfully reading opaque local ChatGPT session records.",
+  "description": "MCP for read-only discovery and faithful acquisition of opaque local ChatGPT session records.",
   "version": "0.1.0",
   "author": "kris@kris.me.uk",
   "bin": {
