@@ -4,12 +4,12 @@ area: FND
 title: Resolve Decision Record Adoption
 theme: foundation-tooling
 horizon: now
-status: awaiting-review
+status: done
 blocks: []
 blocked_by: []
 baseline_ref: b8a0af237814c4eb33a020a5c562963ac299fbcc
 created_at: 2026-09-14T22:06:30Z
-updated_at: 2026-09-26T18:00:42Z
+updated_at: 2026-09-26T18:10:52Z
 ---
 
 ## Goal
@@ -96,6 +96,10 @@ The collection satisfies the repository's declared capability and the estate-lev
 ### Mini recap
 
 This delivery replaces a missing declared capability with its minimum canonical collection and adoption decision. All focused gates pass, and the only full-audit warning is separately owned. No additional learning route or follow-up arises from this item.
+
+## Done
+
+Accepted 2026-09-26 by Kris Brown on the review packet above.
 
 ## Discussion
 
