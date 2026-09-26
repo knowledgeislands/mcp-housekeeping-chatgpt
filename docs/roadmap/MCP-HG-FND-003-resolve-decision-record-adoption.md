@@ -4,12 +4,12 @@ area: FND
 title: Resolve Decision Record Adoption
 theme: foundation-tooling
 horizon: now
-status: ready
+status: in-progress
 blocks: []
 blocked_by: []
-baseline_ref: null
+baseline_ref: b8a0af237814c4eb33a020a5c562963ac299fbcc
 created_at: 2026-09-14T22:06:30Z
-updated_at: 2026-09-26T17:59:05Z
+updated_at: 2026-09-26T18:00:16Z
 ---
 
 ## Goal
@@ -30,10 +30,10 @@ The `ki-decision-records` capability is declared and its canonical `docs/decisio
 
 ## Steps
 
-- [ ] Create `docs/decisions/README.md` as the collection index.
-- [ ] Create `GDR-MCP-HG-001: Adopting Decision Records` as the first and only indexed record.
-- [ ] Keep the record self-contained, current, and limited to adopting the Decision Record instrument.
-- [ ] Run the focused Decision Record, repository, authoring, and roadmap audits, followed by the full repository audit.
+- [x] Create `docs/decisions/README.md` as the collection index.
+- [x] Create `GDR-MCP-HG-001: Adopting Decision Records` as the first and only indexed record.
+- [x] Keep the record self-contained, current, and limited to adopting the Decision Record instrument.
+- [x] Run the focused Decision Record, repository, authoring, and roadmap audits, followed by the full repository audit.
 
 ## Files touched
 
