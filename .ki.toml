@@ -19,6 +19,8 @@ supported_runtimes = ["chatgpt-codex"]
 visibility = "private"
 
 [skills.ki-authoring]
+[skills.ki-binding]
+[skills.ki-binding-chatgpt]
 
 # -----------------------------------------------------------------------------
 # Repository shape
@@ -41,6 +43,9 @@ dependency_holds = ["zod — 4.5.4 and later are incompatible with @modelcontext
 # Change management
 # -----------------------------------------------------------------------------
 
+[skills.ki-agent-coordination-paperclip]
+organisation_code = "KIS"
+
 [skills.ki-git]
 
 [skills.ki-work]
@@ -52,10 +57,11 @@ areas.FND = "foundation-tooling"
 areas.OPS = "operations"
 
 [skills.ki-housekeeping-chatgpt]
+auto_memory = "disabled"
 
 [skills.ki-tokenomics]
 
-[skills.ki-tokenomics-codex]
+[skills.ki-tokenomics-chatgpt]
 
 # -----------------------------------------------------------------------------
 # Relationships
@@ -71,5 +77,4 @@ import = ["knowledge"]
 knowledge = ["shared-capability-maintenance"]
 
 [skills.ki-agora]
-memberships.ki-all = { home = "https://github.com/knowledgeislands/ki-arcadia-principal", role = "product" }
-memberships.ki-mcps = { home = "https://github.com/knowledgeislands/ki-agentic-harness", role = "maintainer" }
+memberships.kis = { home = "https://github.com/knowledgeislands/ki-arcadia-principal", role = "product" }

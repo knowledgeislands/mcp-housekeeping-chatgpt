@@ -1,4 +1,3 @@
-import { strict as assert } from 'node:assert'
 import { homedir } from 'node:os'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -24,7 +23,7 @@ export const ACCESS_LEVEL_RANK: Record<AccessLevel, number> = { read: 1, write: 
 export type AuditLogMode = 'off' | 'writes' | 'all'
 
 export interface Config {
-  housekeepingPath: string
+  housekeepingPath?: string
   accessLevel: AccessLevel
   auditLogMode: AuditLogMode
   auditLogPath: string
@@ -54,17 +53,19 @@ const nonNegativeInt = (value: string | undefined, fallback: number, name: strin
 
 export const loadConfig = (env: NodeJS.ProcessEnv = process.env): Config => {
   if (env === process.env) hydrateEnvFromFiles()
-  assert(env.MCP_HOUSEKEEPING_CHATGPT_PATH, 'MCP_HOUSEKEEPING_CHATGPT_PATH environment variable must be set')
   const configuredPath = env.MCP_HOUSEKEEPING_CHATGPT_PATH
-  const housekeepingPath = path.resolve(
-    configuredPath === '~' ? homedir() : configuredPath.replace(/^~\//, `${homedir()}/`)
-  )
+  const housekeepingPath = configuredPath
+    ? path.resolve(configuredPath === '~' ? homedir() : configuredPath.replace(/^~\//, `${homedir()}/`))
+    : undefined
   return {
-    housekeepingPath,
+    ...(housekeepingPath ? { housekeepingPath } : {}),
     accessLevel: accessLevel(env.MCP_HOUSEKEEPING_CHATGPT_ACCESS_LEVEL),
     auditLogMode: auditLogMode(env.MCP_HOUSEKEEPING_CHATGPT_AUDIT_LOG),
     auditLogPath: path.resolve(
-      env.MCP_HOUSEKEEPING_CHATGPT_AUDIT_LOG_PATH ?? path.join(housekeepingPath, 'audit', 'audit.jsonl')
+      env.MCP_HOUSEKEEPING_CHATGPT_AUDIT_LOG_PATH ??
+        (housekeepingPath
+          ? path.join(housekeepingPath, 'audit', 'audit.jsonl')
+          : path.join(homedir(), '.local', 'state', 'mcp-housekeeping-chatgpt', 'audit.jsonl'))
     ),
     auditLogMaxBytes: nonNegativeInt(
       env.MCP_HOUSEKEEPING_CHATGPT_AUDIT_LOG_MAX_BYTES,

@@ -81,8 +81,12 @@ describe('loadConfig', () => {
     }
   })
 
-  it('requires a store path', () => {
-    expect(() => loadConfig({})).toThrow('MCP_HOUSEKEEPING_CHATGPT_PATH environment variable must be set')
+  it('allows Codex-only operation without a ChatGPT store path', () => {
+    expect(loadConfig({})).toMatchObject({
+      accessLevel: 'read',
+      auditLogPath: path.join(homedir(), '.local', 'state', 'mcp-housekeeping-chatgpt', 'audit.jsonl')
+    })
+    expect(loadConfig({}).housekeepingPath).toBeUndefined()
   })
 
   it('rejects unsupported access and audit modes', () => {

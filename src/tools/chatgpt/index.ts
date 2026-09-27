@@ -1,6 +1,5 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { z } from 'zod'
-import { loadConfig } from '../../config/index.js'
 import { acquisitionCheckpoint, acquisitionSessionRead } from '../../main/chatgpt/local-store.js'
 import { READ_ONLY } from '../../utils/annotations.js'
 import { errorResult, jsonResult } from '../../utils/results.js'
@@ -14,8 +13,7 @@ const sessionArg = z
   .regex(/^[A-Za-z0-9-]+$/)
   .describe('Session identifier returned by chatgpt_sessions_list.')
 
-export const registerChatGptTools = (server: McpServer): void => {
-  const store = loadConfig().housekeepingPath
+export const registerChatGptTools = (server: McpServer, store: string): void => {
   server.registerTool(
     'chatgpt_sessions_discover',
     {
