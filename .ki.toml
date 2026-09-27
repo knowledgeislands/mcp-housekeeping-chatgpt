@@ -11,6 +11,8 @@
 harnesses = ["knowledgeislands/ki-agentic-harness"]
 
 [skills.ki-repo]
+repo_type = "project"
+primary_shape = "ki-repo-mcp"
 repository = "https://github.com/knowledgeislands/mcp-housekeeping-chatgpt"
 title = "mcp-housekeeping-chatgpt"
 description = "MCP for read-only discovery and faithful acquisition of opaque local ChatGPT session records."
