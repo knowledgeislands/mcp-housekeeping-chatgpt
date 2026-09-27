@@ -1,6 +1,22 @@
 import { strict as assert } from 'node:assert'
 import { homedir } from 'node:os'
 import * as path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
+
+const hydrateEnvFromFiles = (): void => {
+  const files = ['.env.local']
+  if (process.env.NODE_ENV) files.push(`.env.${process.env.NODE_ENV}`)
+  files.push('.env')
+  for (const file of files) {
+    try {
+      process.loadEnvFile(path.join(packageRoot, file))
+    } catch {
+      // Bun loads these files itself; missing files are optional under Node.
+    }
+  }
+}
 
 export type AccessLevel = 'read' | 'write' | 'destructive'
 export const ACCESS_LEVELS: readonly AccessLevel[] = ['read', 'write', 'destructive'] as const
@@ -37,6 +53,7 @@ const nonNegativeInt = (value: string | undefined, fallback: number, name: strin
 }
 
 export const loadConfig = (env: NodeJS.ProcessEnv = process.env): Config => {
+  if (env === process.env) hydrateEnvFromFiles()
   assert(env.MCP_HOUSEKEEPING_CHATGPT_PATH, 'MCP_HOUSEKEEPING_CHATGPT_PATH environment variable must be set')
   const configuredPath = env.MCP_HOUSEKEEPING_CHATGPT_PATH
   const housekeepingPath = path.resolve(

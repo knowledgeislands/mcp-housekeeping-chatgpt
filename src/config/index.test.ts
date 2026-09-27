@@ -1,11 +1,45 @@
 import { homedir } from 'node:os'
 import * as path from 'node:path'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { loadConfig } from './index.ts'
 
 const STORE = '/tmp/chatgpt-store'
 
+afterEach(() => {
+  vi.restoreAllMocks()
+  vi.unstubAllEnvs()
+})
+
 describe('loadConfig', () => {
+  it('loads package env files in precedence order with an isolated process environment', () => {
+    vi.stubEnv('MCP_HOUSEKEEPING_CHATGPT_PATH', STORE)
+    vi.stubEnv('NODE_ENV', 'development')
+    const loadEnvFile = vi.spyOn(process, 'loadEnvFile').mockImplementation((file) => {
+      if (String(file).endsWith('.env.local')) throw new Error('file missing')
+    })
+
+    expect(loadConfig().housekeepingPath).toBe(STORE)
+    expect(loadEnvFile.mock.calls.map(([file]) => path.basename(String(file)))).toEqual([
+      '.env.local',
+      '.env.development',
+      '.env'
+    ])
+    expect(
+      loadEnvFile.mock.calls.every(
+        ([file]) => path.dirname(String(file)) === path.resolve(import.meta.dirname, '../..')
+      )
+    ).toBe(true)
+  })
+
+  it('skips the environment-specific file when NODE_ENV is unset', () => {
+    vi.stubEnv('MCP_HOUSEKEEPING_CHATGPT_PATH', STORE)
+    vi.stubEnv('NODE_ENV', undefined)
+    const loadEnvFile = vi.spyOn(process, 'loadEnvFile').mockImplementation(() => {})
+
+    expect(loadConfig().housekeepingPath).toBe(STORE)
+    expect(loadEnvFile.mock.calls.map(([file]) => path.basename(String(file)))).toEqual(['.env.local', '.env'])
+  })
+
   it('expands a managed home-relative ChatGPT store path', () => {
     const config = loadConfig({
       MCP_HOUSEKEEPING_CHATGPT_PATH: '~/Library/Application Support/com.openai.chat'
