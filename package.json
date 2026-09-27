@@ -41,6 +41,10 @@
       "types": "./dist/main/chatgpt/local-store.d.ts",
       "import": "./dist/main/chatgpt/local-store.js"
     },
+    "./codex": {
+      "types": "./dist/main/codex/app-server.d.ts",
+      "import": "./dist/main/codex/app-server.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [
