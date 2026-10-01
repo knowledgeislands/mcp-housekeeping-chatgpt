@@ -3,36 +3,77 @@ id: MCP-HG-FND-002
 title: Review authoring audit
 area: FND
 theme: foundation-tooling
-horizon: future
-status: draft
+horizon: next
+status: ready
 blocks: []
 blocked_by: []
 baseline_ref: null
 created_at: 2026-09-04T08:54:05Z
-updated_at: 2026-09-27T23:17:36Z
+updated_at: 2026-10-01T19:30:29Z
 ---
 
 ## Goal
 
-Resolve the remaining live repository-settings findings and decide whether explicit host-only environment loading remains the intended MCP configuration contract.
+Reconcile the historical authoring/configuration and repository-setting findings with current evidence, yielding an exact remaining-action list or a supported no-remediation recommendation.
 
 ## Context
 
-The local estate baseline now passes authoring, engineering, MCP, trade, roadmap, TypeScript, build, test, 100% coverage, Biome, Knip, Syncpack, and dependency gates.
-
-GitHub still reports no detected licence, a description that differs from `.ki.toml`, merge methods beyond squash, branch auto-delete off, Projects on, Dependabot alerts and security updates off, and update-branch suggestions off. The MCP audit also warns that `src/config/index.ts` deliberately does not call `process.loadEnvFile`; the accepted engineering review records explicit MCP-host configuration as the intended source.
+The previous checkpoint records package environment hydration, description alignment, and Decision Records adoption as delivered locally. It also reported a then-current Knip entry-point failure. The old Context asserted a host-only configuration contract and broad clean gates; those statements must not be treated as current findings. Reported remote GitHub settings require a fresh read-only comparison.
 
 ## Boundary
 
-This is a discussion proposal only. It is not accepted, prioritised, or implementation authority. It does not mutate live GitHub settings or reverse the accepted configuration decision without review.
+A bounded evidence reconciliation and recommendation only. Do not modify application code, configuration, GitHub settings, runtime bindings, dependencies, or source stores. Do not accept or prune historical records. Fresh findings are classified and scoped for later selection, not repaired during this review.
 
-## Shaping
+## Current state
 
-Review the exact GitHub settings diff and licence-detection consequence after the local `LICENSE` commit reaches the default branch. Reconcile the host-only configuration decision with the current MCP standard warning and document an exception or restore file hydration with tests.
+The retained checkpoint below supplies the historical references. Current inputs are `src/config/index.ts`, `src/config/index.test.ts`, `package.json`, `knip.json`, `.ki.toml`, `LICENSE`, `docs/decisions/`, Git history for the cited baseline, and read-only GitHub repository metadata. The checkpoint is evidence to test, not a guarantee that its findings or clean gates remain current.
+
+## Steps
+
+- [ ] Pin local HEAD and recover the historical acceptance criteria from retained records, cited commits, and their governed standard; label any unavailable original evidence explicitly.
+- [ ] Run fresh focused `ki-repo`, `ki-repo-mcp`, `ki-engineering`, and `ki-decision-records` audits sequentially, preserving exact finding identities and exit codes. Check the Codex export's current Knip entry-point reachability instead of assuming the checkpoint failure persists.
+- [ ] Inspect environment hydration and its tests and trace the cited host-only rationale. Report whether code and accepted policy agree, with a specific documentation/decision follow-on if they differ; do not implement or reverse configuration policy here.
+- [ ] Read current GitHub metadata through the authenticated read-only API/CLI and compare only the originally reported licence, description, merge, branch-delete, Projects, dependency-security, and update-branch settings against current declared policy. Distinguish local/default-branch divergence and permission-denied fields from actual misconfiguration. If access is unavailable, report exact unverified fields; do not invent their values.
+- [ ] Add an evidence matrix in this record's Discussion: historical finding, current observation, source/ref/command, resolved or still applicable, acceptance-criteria confidence, and narrowly scoped recommended next action. Classify remote changes as proposed exact diffs requiring their own reviewed authority.
+- [ ] Prepare the review packet and run the roadmap/authoring checks; recommend disposition without marking this or historical delivery accepted.
+
+## Files touched
+
+This roadmap record only. All listed source, history, standard, and remote evidence inputs are read-only. Put the durable evidence summary and recommendation in the record; temporary raw command logs do not become a new repository documentation surface.
+
+## Verify
+
+Every historical finding must be accounted for as evidenced resolved, presently applicable, or explicitly unverified; include audit command exit codes and pinned local/default-branch evidence where accessible. No live settings, source configuration, or dependency changes occur. A passing fresh audit alone is not acceptance of historical work. Run `ki repo audit --skill ki-work-roadmap --repo .`, `ki repo audit --skill ki-authoring --repo .`, and `bunx rumdl check docs/roadmap/MCP-HG-FND-002-review-authoring-audit.md` sequentially. Audit failures in the reviewed contract are review results to classify, not authority to repair unrelated files.
+
+## Dependencies / blocks
+
+No build-order blocker to the review. Missing historical material or unavailable remote fields are explicit findings and constrain the recommendation; they do not justify claiming a verified repair or starting implementation. Reconcile any live delivery claims before a later implementation assignment; this read-only evidence review does not release other owners.
+
+## Documentation impact
+
+### Decision Records
+
+Trace any existing rationale in the evidence matrix. Recommend a separately reviewed decision only where the current policy needs clarification; do not fabricate an accepted decision during an audit review.
+
+### Specifications
+
+No behaviour contract changes. Cite criteria and distinguish current observation from the desired rule.
+
+### Guides
+
+No guide changes in this review. Identify a precise guide mismatch as a follow-on only if the evidence establishes one.
+
+### Roadmap
+
+Enrich this retained item with a review deliverable and exact remaining-action recommendations. Do not self-accept, duplicate delivered repairs, or close historical work through a status edit.
 
 ## Discussion
 
-The live GitHub changes require an exact reviewed confirmation. The configuration warning is currently warranted by the accepted FND-001 review, but the standard and repository should converge rather than retain unexplained drift.
+### Bounded review outcome
+
+Readiness applies to the evidence reconciliation and recommendation. A supported no-remediation conclusion is useful delivery; implementation of speculative fixes is not part of this plan. The existing pickup checkpoint remains below as historical input.
+
+The earlier review treated the host-only configuration warning as warranted. Environment hydration has since landed, so this investigation must reconcile the accepted rationale with current code before recommending any policy or implementation change. Any proposed live GitHub setting changes still require an exact reviewed decision.
 
 ### Pickup checkpoint — 2026-09-28
 

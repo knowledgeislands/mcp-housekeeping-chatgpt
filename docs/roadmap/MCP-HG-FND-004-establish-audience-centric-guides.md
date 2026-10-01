@@ -4,88 +4,81 @@ title: Establish audience-centric guides
 area: FND
 theme: foundation-tooling
 horizon: now
-status: draft
+status: ready
 blocks: []
 blocked_by: []
 transferred_from: ki-website
 baseline_ref: null
 created_at: 2026-09-21T17:20:00Z
-updated_at: 2026-09-24T09:14:00Z
+updated_at: 2026-10-01T19:27:46Z
 ---
 
 ## Goal
 
-A reader can find practical instructions for this server grouped by the audience that needs them, and the repository declares `ki-guides` so that grouping is gated rather than conventional.
+A reader can configure and use the combined ChatGPT and Codex MCP adapters, understand their acquisition boundaries, and find the practical instructions for their role.
 
 ## Context
 
-`mcp-housekeeping-chatgpt` has no `docs/guides/` and does not declare `ki-guides`. Its README is seven lines: what the server reads, the environment variable that points at it, and the file pattern. There is no installation guide, no client configuration, no account of what the server exposes, and no troubleshooting.
+The surviving server now registers the Codex adapter unconditionally and ChatGPT tools when `MCP_HOUSEKEEPING_CHATGPT_PATH` is configured. The retiring `mcp-housekeeping-codex` README directs readers here. The old ChatGPT-only guide proposal therefore misses half the current product. There is still no `docs/guides/` or `ki-guides` declaration.
 
-Seven lines is not a small documentation debt because the server is small — it is the whole of the user-facing explanation for a tool someone has to configure against their own ChatGPT export.
+The README describes opaque ChatGPT acquisition and exact physical-repository Codex matching. `src/config/index.ts` additionally owns access, audit, optional package environment hydration, and audit destination defaults; these need accurate configuration guidance. The exported Codex library also contains guarded deletion, while MCP registrations are read-only. Guide claims must distinguish those surfaces.
 
-KI Website now declares, for every page it publishes under `apps/site/src/guidance/`, the exact upstream document and pinned ref that page was written from, and a `verify:guidance --network` sweep reports the pages whose source has moved. The site intends to derive public guidance for this project from this repository's own guides and cite them at a pinned ref, so the quality and stability of `docs/guides/` here directly determines the quality of what the site can publish.
-
-That is a pull, not an obligation: KI Website derives, it does not own. This repository decides what its guides say and when they change.
-
-Separately, `KI-HARNESS-GOV-083` has clarified `ki-guides`: audience directories are recommended when stable reader groups make a collection easier to navigate, while flat and mixed collections remain valid. This item therefore stands on this repository's own readers and routing needs, not a universal Harness requirement.
+KI Website may derive guidance and cite this repository at a pinned ref, but this repository owns the source instructions and their release timing.
 
 ## Boundary
 
-Adopted into `Now` by explicit approval, so this is prioritised work rather than intake. It remains `status: draft`: `ki-plan` shapes it to `Ready` before any implementation, and this repository still owns its plan and sequencing.
-
-KI Website derives and cites; it does not own this collection and must not be given approval rights over it. Nothing here requires a guide to be written for the website's benefit — if a guide would not serve this repository's own readers, it should not exist.
-
-## Shaping
-
-- Decide the audience directories this server needs. `user/` covers someone pointing it at their own export; `developer/` covers someone changing its code.
-- Write what does not exist rather than moving what does: there is almost nothing in the README to relocate.
-- Cover the path discovery rules explicitly, since `MCP_HOUSEKEEPING_CHATGPT_PATH` and the `*.data` pattern are the whole configuration surface and the failure mode when they are wrong is silence.
-- Declare `[skills.ki-guides]` in `.ki.toml` and run the guides audit to gate the result.
+Documentation and the `ki-guides` declaration only. Describe the installed behaviour, with fixture-based examples; do not change acquisition, exports, runtime bindings, external stores, or the guarded deletion contract. Do not claim the whole library is read-only merely because all registered MCP tools are. Do not add a second guide collection in the superseded Codex repository.
 
 ## Current state
 
-No `docs/guides/` directory, no `[skills.ki-guides]` in `.ki.toml`, and a seven-line README. Nothing gates whether a collection exists or what shape it takes, and there is almost no existing prose to consolidate.
+The source of truth is `src/config/index.ts`, `src/mcp-server/register.ts`, `src/tools/chatgpt/index.ts`, `src/tools/codex/index.ts`, and both `src/main/` adapters. Package scripts provide local build, development, inspection, and compiled Node startup; distribution is a private local checkout. ChatGPT records are opaque `*.data` files, not a decoded export format. No guide collection currently explains setup, empty inventories, provenance, or safe downstream staging for either adapter.
 
 ## Steps
 
-- [ ] Name the audiences this server actually has.
-- [ ] Create `docs/guides/README.md` as the collection index, routing by audience and nothing else.
-- [ ] Create one directory per named audience, each with its own index.
-- [ ] Write the guides: installation, MCP client configuration, the export path and file pattern it expects, what the tools return, and what a misconfigured path looks like.
-- [ ] Leave the README as orientation, linking to the collection.
-- [ ] Declare `[skills.ki-guides]` in `.ki.toml`.
-- [ ] Run the guides audit and repair what it reports.
+- [ ] Create `docs/guides/README.md`, `user/README.md`, and `developer/README.md`, routing installation and operation to users and source maintenance to developers.
+- [ ] Write `user/installation-and-configuration.md` from the local checkout scripts, Node/Bun requirements, optional ChatGPT path, unconditional Codex registration, environment hydration, access level, and audit options. Include a host-neutral stdio configuration example without changing any real host binding or recommending registry publication.
+- [ ] Write `user/acquiring-sessions.md` with ChatGPT discovery/list/read/checkpoint and Codex repository-scoped equivalents, opaque identities/bytes and provenance, physical-repository matching, and the handoff to `ki acquire import`. Keep the current tool inventory in the README as reference and link to it rather than duplicating schemas in prose.
+- [ ] Write `user/troubleshooting.md` for an absent ChatGPT path/tool group, a missing or unreadable store, no matching records, a missing Codex executable/app-server capability, and an empty exact-repository inventory. Describe actual error/empty-result behaviour from fixtures without accessing live session stores.
+- [ ] Write `developer/local-development.md` covering configuration injection, read-only tool annotations, isolated fixtures, build/test/typecheck, and the boundary between MCP acquisition and the separate exported review/deletion helper. Link existing source and the predecessor boundary record without endorsing or changing its unresolved public API policy.
+- [ ] Keep the README as orientation, current tool reference, and guide entry point; declare `[skills.ki-guides]` in `.ki.toml`.
+- [ ] Verify all commands, paths, environment names, and tool names against current source and package scripts, then run the focused audits and link checks.
 
 ## Files touched
 
-`docs/guides/` (new), `.ki.toml`, `README.md`.
+`README.md`, `.ki.toml`, and the seven guide files named above. The work creates no source-code changes and does not edit the retired Codex repository.
 
 ## Verify
 
-`ki repo audit --skill ki-guides --repo .` passes, and `ki repo audit --skill ki-authoring --repo .` passes over the collection.
+Run `ki repo audit --skill ki-guides --repo .`, `ki repo audit --skill ki-authoring --repo .`, and `ki repo audit --skill ki-work-roadmap --repo .` sequentially; each must pass. Run `bunx rumdl check README.md docs/guides` and resolve local Markdown links. Inspect both documented startup modes against `src/mcp-server/register.test.ts`; the Codex-only setup must not imply a required ChatGPT store. Review every claim of read-only behaviour against the registered MCP surface and the separate library export. No command should read or mutate the user's real session store during documentation verification.
 
 ## Dependencies / blocks
 
-Nothing blocks this. `KI-HARNESS-GOV-083` is advisory rather than a universal migration requirement; this item's audience grouping remains justified by the repository-local reader distinctions described above. KI Website intends to derive public guidance from these guides and cite them at a pinned ref, but it derives rather than owns and its schedule does not gate this work.
+No build-order blocker. [The predecessor guide item](../../../mcp-housekeeping-codex/docs/roadmap/MCP-HC-FND-004-establish-audience-centric-guides.md) is superseded in practical scope by this combined collection, but this item does not close it. The predecessor's unresolved library-boundary record does not block documenting the present distinction accurately. KI Website derives and does not approve these guides.
 
 ## Documentation impact
 
 ### Decision Records
 
-No decision record is needed. Audience-centric grouping is the house arrangement `ki-guides` already encodes, so adopting it here is conformance rather than a new decision. One becomes owed only if this repository concludes it needs an exception.
+No new runtime or export policy is decided. Record a decision separately only if implementation proposes changing the observed public-library contract; that is outside this guide delivery.
 
 ### Specifications
 
-No behaviour-level contract changes. This item changes only where instructions live and who they are written for.
+No behaviour changes. Configuration and tool behaviour are described from existing source and fixtures.
 
 ### Guides
 
-This item is entirely guide impact: it establishes or completes the collection, its audience directories, and their indexes.
+Establish the user and developer collection for both adapters, with configuration, acquisition, troubleshooting, and development instructions.
 
 ### Roadmap
 
-No further roadmap change is expected. If writing the guides exposes behaviour that cannot honestly be explained, that is a separate item raised at the time.
+Preserve the existing guide identity and website origin. Record successor coverage in the retired Codex guide item without accepting or pruning it. Any runtime mismatch found while writing becomes separately scoped work rather than an undocumented change.
 
 ## Discussion
 
-Shaping settles how far this goes, not whether it happens. The prompting question is whether a reader who has never opened this repository can do what it is for without reading source.
+### Audience and product boundary
+
+User and developer directories are a repository-local navigation choice, not a universal requirement of `ki-guides`. The consolidated server needs one collection that explains each adapter's different evidence model: opaque ChatGPT records and Codex app-server sessions matched to a physical repository.
+
+### Source ownership
+
+The website can cite stable repository guidance; its publishing schedule does not gate this work. The public library deletion question remains separate from writing an accurate MCP acquisition guide.
