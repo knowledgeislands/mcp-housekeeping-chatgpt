@@ -1,0 +1,9 @@
+# Troubleshoot source discovery and empty inventories
+
+Start by listing the MCP host's registered tools. With no `MCP_HOUSEKEEPING_CHATGPT_PATH`, only the four `codex_*` tools register; set the ChatGPT path in the host environment and restart the server to expose its four `chatgpt_*` tools. A configured path is checked when a ChatGPT operation runs, so registration alone does not prove that the store can be read.
+
+If a ChatGPT call fails, check that the path names a readable physical directory, not a symlink, and that it contains `project-*` directories with `conversations-v3-*` directories and `*.data` records. A missing path produces a tool error rather than an empty checkpoint. Nonmatching names or no records produce an empty `sessions` array and a zero discovery count. A requested project/session pair absent from the current physical inventory produces a read error; list again and use the returned identifiers.
+
+If a Codex call fails, run `codex --version` from the same environment used by the MCP host and confirm that `codex app-server` can start. The adapter starts that process per request and reports start or protocol errors as tool errors. Supply an existing absolute repository directory: a nonexistent path fails physical resolution. A valid repository with no exact-working-directory threads returns an empty session inventory, even if threads exist in a parent or sibling checkout. Use the repository's physical path consistently for discover, list, and read; a read for a thread outside that boundary returns an error.
+
+If tools are missing after configuring an access level, use `read` or leave the setting unset. Invalid access or audit values fail config loading at startup; check the server's error and correct the host environment. If reads work but the host reports audit-log errors, check the chosen local audit destination and permissions; the `all` mode writes a log entry for reads.

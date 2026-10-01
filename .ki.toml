@@ -41,6 +41,8 @@ dependency_holds = ["zod — 4.5.4 and later are incompatible with @modelcontext
 
 [skills.ki-decision-records]
 
+[skills.ki-guides]
+
 # -----------------------------------------------------------------------------
 # Change management
 # -----------------------------------------------------------------------------

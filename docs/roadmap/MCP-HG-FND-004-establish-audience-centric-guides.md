@@ -4,13 +4,13 @@ title: Establish audience-centric guides
 area: FND
 theme: foundation-tooling
 horizon: now
-status: ready
+status: awaiting-review
 blocks: []
 blocked_by: []
 transferred_from: ki-website
-baseline_ref: null
+baseline_ref: 62ae102bf96d37080e8a755cd41fa7a4771cb944
 created_at: 2026-09-21T17:20:00Z
-updated_at: 2026-10-01T19:27:46Z
+updated_at: 2026-10-01T20:34:16Z
 ---
 
 ## Goal
@@ -35,13 +35,13 @@ The source of truth is `src/config/index.ts`, `src/mcp-server/register.ts`, `src
 
 ## Steps
 
-- [ ] Create `docs/guides/README.md`, `user/README.md`, and `developer/README.md`, routing installation and operation to users and source maintenance to developers.
-- [ ] Write `user/installation-and-configuration.md` from the local checkout scripts, Node/Bun requirements, optional ChatGPT path, unconditional Codex registration, environment hydration, access level, and audit options. Include a host-neutral stdio configuration example without changing any real host binding or recommending registry publication.
-- [ ] Write `user/acquiring-sessions.md` with ChatGPT discovery/list/read/checkpoint and Codex repository-scoped equivalents, opaque identities/bytes and provenance, physical-repository matching, and the handoff to `ki acquire import`. Keep the current tool inventory in the README as reference and link to it rather than duplicating schemas in prose.
-- [ ] Write `user/troubleshooting.md` for an absent ChatGPT path/tool group, a missing or unreadable store, no matching records, a missing Codex executable/app-server capability, and an empty exact-repository inventory. Describe actual error/empty-result behaviour from fixtures without accessing live session stores.
-- [ ] Write `developer/local-development.md` covering configuration injection, read-only tool annotations, isolated fixtures, build/test/typecheck, and the boundary between MCP acquisition and the separate exported review/deletion helper. Link existing source and the predecessor boundary record without endorsing or changing its unresolved public API policy.
-- [ ] Keep the README as orientation, current tool reference, and guide entry point; declare `[skills.ki-guides]` in `.ki.toml`.
-- [ ] Verify all commands, paths, environment names, and tool names against current source and package scripts, then run the focused audits and link checks.
+- [x] Create `docs/guides/README.md`, `user/README.md`, and `developer/README.md`, routing installation and operation to users and source maintenance to developers.
+- [x] Write `user/installation-and-configuration.md` from the local checkout scripts, Node/Bun requirements, optional ChatGPT path, unconditional Codex registration, environment hydration, access level, and audit options. Include a host-neutral stdio configuration example without changing any real host binding or recommending registry publication.
+- [x] Write `user/acquiring-sessions.md` with ChatGPT discovery/list/read/checkpoint and Codex repository-scoped equivalents, opaque identities/bytes and provenance, physical-repository matching, and the handoff to `ki acquire import`. Keep the current tool inventory in the README as reference and link to it rather than duplicating schemas in prose.
+- [x] Write `user/troubleshooting.md` for an absent ChatGPT path/tool group, a missing or unreadable store, no matching records, a missing Codex executable/app-server capability, and an empty exact-repository inventory. Describe actual error/empty-result behaviour from fixtures without accessing live session stores.
+- [x] Write `developer/local-development.md` covering configuration injection, read-only tool annotations, isolated fixtures, build/test/typecheck, and the boundary between MCP acquisition and the separate exported review/deletion helper. Link existing source and the predecessor boundary record without endorsing or changing its unresolved public API policy.
+- [x] Keep the README as orientation, current tool reference, and guide entry point; declare `[skills.ki-guides]` in `.ki.toml`.
+- [x] Verify all commands, paths, environment names, and tool names against current source and package scripts, then run the focused audits and link checks.
 
 ## Files touched
 
@@ -72,6 +72,32 @@ Establish the user and developer collection for both adapters, with configuratio
 ### Roadmap
 
 Preserve the existing guide identity and website origin. Record successor coverage in the retired Codex guide item without accepting or pruning it. Any runtime mismatch found while writing becomes separately scoped work rather than an undocumented change.
+
+## Review
+
+### Delivered
+
+Established the combined ChatGPT/Codex practical guide collection at baseline `62ae102bf96d37080e8a755cd41fa7a4771cb944`. A user can configure either adapter, acquire sessions, and diagnose empty or failing inventories; a developer can maintain the source with isolated fixtures.
+
+### Change Summary
+
+Added the guide index and user/developer guides, declared `ki-guides`, and linked the collection from the README. The README now names all eight registered tools and distinguishes their read-only MCP boundary from the separate guarded `./codex` deletion helper. No runtime, binding, or source-store behavior changed.
+
+### Verification
+
+The focused `ki-guides`, `ki-authoring`, and `ki-work-roadmap` audits passed. `bunx rumdl check README.md docs/guides` passed for all eight documents, and all local Markdown links resolved. Commands, environment names, tool names, and both registration modes were checked against package scripts, configuration source, tool declarations, and fixture tests. No live session store was accessed.
+
+### Outstanding concerns
+
+The predecessor Codex guide record remains Future/Draft under its own repo and is already deferred to this successor. Its lifecycle is outside this delivery. The separate public-library deletion policy also remains subject to its own boundary review; these guides describe observed behavior only.
+
+### Post-change review
+
+The collection stands alone for its user and developer audiences and names the actual optional ChatGPT path and unconditional Codex registration. Acquisition descriptions preserve ChatGPT opacity and Codex's exact physical-repository constraint. The candidate is ready for owner acceptance.
+
+### Mini recap
+
+Documentation and the guide declaration are committed for review; the server and user stores were untouched. The item remains Awaiting review until explicit acceptance.
 
 ## Discussion
 
