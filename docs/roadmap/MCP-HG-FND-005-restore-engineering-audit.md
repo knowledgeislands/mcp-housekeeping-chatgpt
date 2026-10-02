@@ -4,12 +4,12 @@ area: FND
 title: Restore engineering audit
 theme: foundation-tooling
 horizon: next
-status: awaiting-review
+status: done
 blocks: []
 blocked_by: []
 baseline_ref: f44157600e5030f1b7c8e7a615b54e66ba8d48ef
 created_at: 2026-10-01T20:12:00Z
-updated_at: 2026-10-02T02:28:26Z
+updated_at: 2026-10-02T02:56:52Z
 ---
 
 ## Goal
@@ -89,6 +89,10 @@ The two Knip failures and stale hold warning are resolved without broad ignore r
 ### Mini recap
 
 The engineering audit passes with the intended public entry modeled and the obsolete hold removed. The separate export-policy question remains with the owner; it is not accepted by this review.
+
+## Done
+
+Accepted 2026-10-02 by Kris Brown on the review packet above.
 
 ## Discussion
 
