@@ -4,13 +4,13 @@ title: Establish audience-centric guides
 area: FND
 theme: foundation-tooling
 horizon: now
-status: awaiting-review
+status: done
 blocks: []
 blocked_by: []
 transferred_from: ki-website
 baseline_ref: 62ae102bf96d37080e8a755cd41fa7a4771cb944
 created_at: 2026-09-21T17:20:00Z
-updated_at: 2026-10-01T20:34:16Z
+updated_at: 2026-10-02T02:20:58Z
 ---
 
 ## Goal
@@ -98,6 +98,10 @@ The collection stands alone for its user and developer audiences and names the a
 ### Mini recap
 
 Documentation and the guide declaration are committed for review; the server and user stores were untouched. The item remains Awaiting review until explicit acceptance.
+
+## Done
+
+Accepted 2026-10-02 by Kris Brown on the review packet above.
 
 ## Discussion
 
