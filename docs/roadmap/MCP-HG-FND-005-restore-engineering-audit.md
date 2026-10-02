@@ -4,12 +4,12 @@ area: FND
 title: Restore engineering audit
 theme: foundation-tooling
 horizon: next
-status: ready
+status: awaiting-review
 blocks: []
 blocked_by: []
-baseline_ref: null
+baseline_ref: f44157600e5030f1b7c8e7a615b54e66ba8d48ef
 created_at: 2026-10-01T20:12:00Z
-updated_at: 2026-10-02T02:23:36Z
+updated_at: 2026-10-02T02:28:26Z
 ---
 
 ## Goal
@@ -30,9 +30,9 @@ Reconcile Knip's public entry points and the stale dependency hold against curre
 
 ## Steps
 
-- [ ] Add the public Codex entry to Knip and narrowly ignore the external `codex` executable; retain the existing export and registered MCP tools.
-- [ ] Recheck installed Zod and SDK type compatibility, then remove or revise only the stale dependency hold.
-- [ ] Run Knip, TypeScript, tests, coverage, and focused engineering and roadmap audits; record any unrelated residual finding separately.
+- [x] Add the public Codex entry to Knip and narrowly ignore the external `codex` executable; retain the existing export and registered MCP tools.
+- [x] Recheck installed Zod and SDK type compatibility, then remove or revise only the stale dependency hold.
+- [x] Run Knip, TypeScript, tests, coverage, and focused engineering and roadmap audits; record any unrelated residual finding separately.
 
 ## Files touched
 
@@ -63,6 +63,32 @@ No user workflow changes; existing guidance continues to describe the public lib
 ### Roadmap
 
 Retain this item for the review packet and explicit acceptance.
+
+## Review
+
+### Delivered
+
+Restored the engineering audit from baseline `f44157600e5030f1b7c8e7a615b54e66ba8d48ef` in `c544392b5b5943a8ae5ee698ab9bb9a7bfa45a21`. The public `./codex` export and read-only MCP registration remain unchanged. No live ChatGPT or Codex store was accessed.
+
+### Change Summary
+
+`knip.json` now includes the public Codex source entry and narrowly ignores the external `codex` binary. `.ki.toml` no longer carries a Zod hold contradicted by the installed `zod` 4.6.5 and SDK 1.30.1 compatibility proven by TypeScript and tests. No runtime source changed.
+
+### Verification
+
+`bunx knip --reporter compact`, `bunx tsc --noEmit`, `bun run test` (70 tests), `bun run test:coverage`, and focused `ki-engineering` and `ki-work-roadmap` audits pass. The engineering audit initially found only Biome formatting in `knip.json`; formatting was applied and the audit reran clean.
+
+### Outstanding concerns
+
+The lasting public deletion-export policy remains an owner decision outside this configuration repair. Current developer guidance describes observed guarded behavior; this packet makes no future removal decision.
+
+### Post-change review
+
+The two Knip failures and stale hold warning are resolved without broad ignore rules, package-export removal, or runtime behavior changes. The targeted binary exception matches the package's intentional CLI invocation. Ready for owner acceptance of this bounded repair.
+
+### Mini recap
+
+The engineering audit passes with the intended public entry modeled and the obsolete hold removed. The separate export-policy question remains with the owner; it is not accepted by this review.
 
 ## Discussion
 
