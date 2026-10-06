@@ -15,6 +15,7 @@ repo_type = "project"
 primary_shape = "ki-repo-mcp"
 repository = "https://github.com/knowledgeislands/mcp-housekeeping-chatgpt"
 title = "mcp-housekeeping-chatgpt"
+capital = "https://github.com/knowledgeislands/ki-arcadia-principal"
 description = "MCP for read-only discovery and faithful acquisition of opaque local ChatGPT session records."
 repo_code = "MCP-HG"
 supported_runtimes = ["chatgpt-codex"]
@@ -71,8 +72,3 @@ auto_memory = "disabled"
 # -----------------------------------------------------------------------------
 
 [skills.ki-trades]
-
-[skills.ki-trades.routes."knowledgeislands/ki-agentic-harness"]
-export = ["work", "knowledge"]
-import = ["knowledge"]
-standing.export.knowledge = ["shared-capability-maintenance"]
