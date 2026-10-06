@@ -69,7 +69,7 @@
     ]
   },
   "main": "dist/mcp-server/index.js",
-  "packageManager": "bun@1.4.1",
+  "packageManager": "bun@1.4.2",
   "private": true,
   "repository": {
     "type": "git",
