@@ -56,8 +56,11 @@ organisation_code = "KIS"
 adapter = "roadmap"
 
 [skills.ki-work-roadmap]
-areas = ["FND", "OPS"]
 components = ["operations"]
+
+[skills.ki-work-roadmap.areas]
+FND = "Foundation tooling"
+OPS = "Operations"
 
 [skills.ki-housekeeping-chatgpt]
 auto_memory = "disabled"
