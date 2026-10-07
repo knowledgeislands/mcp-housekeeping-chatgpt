@@ -59,8 +59,8 @@ adapter = "roadmap"
 components = ["operations"]
 
 [skills.ki-work-roadmap.areas]
-FND = "Foundation tooling"
-OPS = "Operations"
+FND = "Engineering foundations"
+OPS = "Housekeeping operations"
 
 [skills.ki-housekeeping-chatgpt]
 auto_memory = "disabled"
