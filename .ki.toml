@@ -21,7 +21,7 @@ repo_code = "MCP-HG"
 supported_runtimes = [
   "chatgpt-codex",
 ]
-visibility = "private"
+visibility = "public"
 
 [skills.ki-authoring]
 
