@@ -1,5 +1,5 @@
 ---
-id: GDR-MCP-HG-001
+id: GDR-KI-MCP-HG-001
 title: 'Adopting Decision Records'
 date: 2026-09-26
 status: current
@@ -7,7 +7,7 @@ decision_type: governance
 decision_type_url: https://knowledgeislands.info/specifications/decision-records/gdr
 ---
 
-# GDR-MCP-HG-001: Adopting Decision Records
+# GDR-KI-MCP-HG-001: Adopting Decision Records
 
 ## Context
 
