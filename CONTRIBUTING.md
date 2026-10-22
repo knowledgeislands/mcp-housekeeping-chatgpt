@@ -4,7 +4,7 @@ Use Bun for the development loop and Node 22 or later for compiled output.
 
 ```bash
 bun install
-bun install --cwd tooling/boundaries
+bun install --cwd tooling/depcruise
 bun run test
 bun run test:coverage
 bunx tsc --noEmit

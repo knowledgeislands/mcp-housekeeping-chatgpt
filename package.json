@@ -81,7 +81,7 @@
     "ki:server:mcp:dev": "NODE_ENV=development bun --watch src/mcp-server/index.ts",
     "ki:server:mcp:inspect": "NODE_ENV=development bunx @modelcontextprotocol/inspector bun src/mcp-server/index.ts",
     "ki:server:mcp:start": "bun run build && node dist/mcp-server/index.js",
-    "prepare": "git config core.hooksPath .githooks && bun install --frozen-lockfile --cwd tooling/boundaries",
+    "prepare": "git config core.hooksPath .githooks && bun install --frozen-lockfile --cwd tooling/depcruise",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest"
