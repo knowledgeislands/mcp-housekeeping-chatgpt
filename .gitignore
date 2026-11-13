@@ -15,6 +15,7 @@ Thumbs.db
 *~
 .claude/settings.local.json
 *.log
+.claude/skills/*
 .agents/skills/*
 !.agents/skills/ki-self/
 !.agents/skills/ki-self/**

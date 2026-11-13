@@ -19,6 +19,8 @@ capital = "https://github.com/knowledgeislands/ki-principal"
 description = "MCP for read-only discovery and faithful acquisition of opaque local ChatGPT session records."
 repo_code = "KI-MCP-HG"
 supported_runtimes = [
+  "claude-code",
+  "claude-desktop",
   "chatgpt-codex",
 ]
 visibility = "public"
