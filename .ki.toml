@@ -7,7 +7,7 @@
 
 [repo]
 harnesses = [
-  "knowledgeislands/ki-agentic-harness",
+  "knowledgeislands/ki-agent-backpack",
 ]
 
 [skills.ki-repo]
@@ -45,16 +45,16 @@ visibility = "public"
 
 [skills.ki-guides]
 
-[skills.ki-binding]
+[skills.ki-env-binding]
 
-[skills.ki-binding-chatgpt]
+[skills.ki-env-binding-chatgpt]
 
-[skills.ki-housekeeping-chatgpt]
+[skills.ki-env-housekeeping-chatgpt]
 auto_memory = "disabled"
 
-[skills.ki-tokenomics]
+[skills.ki-env-tokenomics]
 
-[skills.ki-tokenomics-chatgpt]
+[skills.ki-env-tokenomics-chatgpt]
 
 # -----------------------------------------------------------------------------
 # Change management
