@@ -1,12 +1,10 @@
 # AGENTS.md
 
-## Runtime
-
-Use Bun for installation, development, and tests; use `bun run test`, never `bun test`. Published `dist/` output runs under Node 22 or later. Production configuration comes from the MCP host environment.
-
 ## Architecture
 
-Keep ChatGPT source records opaque. Tool modules validate and adapt MCP envelopes; ChatGPT local-store reads live under `src/main/chatgpt/`, while Codex app-server inspection lives under `src/main/codex/`. Load configuration once in the server entry point and pass the smallest values needed into implementation functions. Reusable access, audit, result, and path helpers belong under `src/utils/`.
+Engineering follows `ki-engineering`, and the server's shape follows `ki-repo-mcp`: its layout, configuration injection, tool naming, annotation-driven access gate and security invariants. Production configuration comes from the MCP host environment.
+
+Keep ChatGPT source records opaque. ChatGPT local-store reads live under `src/main/chatgpt/`, while Codex app-server inspection lives under `src/main/codex/`.
 
 This dependency direction is enforced, not just described: [.dependency-cruiser.ts](./.dependency-cruiser.ts) states each boundary as a named rule and [src/boundaries.test.ts](./src/boundaries.test.ts) cruises the source graph and proves every rule still rejects a deliberate crossing. The checker runs from its own install root, `tooling/depcruise`, because dependency-cruiser needs a TypeScript below 7.
 
