@@ -470,6 +470,61 @@ describe('Codex process adapter', () => {
     expect(() => installedCodexVersion()).toThrow('codex --version failed')
   })
 
+  test('bounds codex --version with a timeout and reports a missing binary cleanly', () => {
+    installCodexExecutable('#!/bin/sh\nsleep 5\n')
+    expect(() => installedCodexVersion(100)).toThrow(/codex --version failed: .*ETIMEDOUT/)
+
+    process.env.PATH = mkdtempSync(join(tmpdir(), 'ki-empty-path-'))
+    expect(() => installedCodexVersion()).toThrow(/codex --version failed: .*ENOENT/)
+  })
+
+  test('fails a request that app-server never answers, kills it, and still closes', async () => {
+    installCodexExecutable(`#!/usr/bin/env node
+const readline = require('node:readline')
+const lines = readline.createInterface({ input: process.stdin })
+lines.on('line', (line) => {
+  const message = JSON.parse(line)
+  if (message.method === 'initialize') console.log(JSON.stringify({ id: message.id, result: {} }))
+})
+`)
+    const transport = await StdioClient.start({ requestTimeoutMs: 200 })
+    await expect(transport.request('thread/list', {})).rejects.toThrow(
+      'codex app-server did not answer thread/list within 200 ms'
+    )
+    await transport.close()
+  })
+
+  test('fails start cleanly when app-server never answers initialize', async () => {
+    installCodexExecutable('#!/bin/sh\nexec sleep 30\n')
+    await expect(StdioClient.start({ requestTimeoutMs: 200 })).rejects.toThrow(
+      'codex app-server did not answer initialize within 200 ms'
+    )
+  })
+
+  test.each([
+    ['one unterminated line', 'process.stdout.write("x".repeat(5000))'],
+    ['one terminated line', 'process.stdout.write("x".repeat(5000) + "\\n")']
+  ])('kills app-server when it sends %s over the message cap', async (_label, response) => {
+    installCodexExecutable(`#!/usr/bin/env node
+const readline = require('node:readline')
+const lines = readline.createInterface({ input: process.stdin })
+lines.on('line', (line) => {
+  const message = JSON.parse(line)
+  if (message.method === 'initialize') {
+    console.log(JSON.stringify({ id: message.id, result: {} }))
+    return
+  }
+  if (message.method === 'initialized') return
+  ${response}
+})
+`)
+    const transport = await StdioClient.start({ maxMessageBytes: 1000 })
+    await expect(transport.request('thread/read', {})).rejects.toThrow(
+      'codex app-server sent a message larger than 1000 bytes'
+    )
+    await transport.close()
+  })
+
   test('exchanges JSON lines, ignores notifications, and closes the subprocess', async () => {
     installCodexExecutable(`#!/usr/bin/env node
 const readline = require('node:readline')

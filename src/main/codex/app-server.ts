@@ -12,6 +12,16 @@ import { createInterface } from 'node:readline'
 const SCHEMA = 1 as const
 const CONFIRMATION = 'PERMANENTLY_DELETE_SELECTED_CODEX_THREADS'
 const PAGE_LIMIT = 100
+/**
+ * Every app-server request is local stdio JSON-RPC, so a healthy server answers
+ * in well under a second; 20 seconds leaves room for a cold start or a long
+ * thread/read while ensuring a wedged server cannot hold an MCP call open.
+ */
+export const APP_SERVER_REQUEST_TIMEOUT_MS = 20_000
+/** Upper bound on one JSON-RPC message line; a thread/read returns metadata, not bulk content. */
+export const APP_SERVER_MAX_MESSAGE_BYTES = 32 * 1024 * 1024
+/** `codex --version` prints one line and returns at once. */
+export const CODEX_VERSION_TIMEOUT_MS = 20_000
 const PROTOCOL_CONTRACT = {
   experimentalApi: true,
   methods: ['initialize', 'thread/list', 'thread/read', 'thread/delete'],
@@ -334,48 +344,70 @@ export const deleteReviewed = async (
   return deleted
 }
 
+export type StdioClientOptions = {
+  /** Per-request deadline; on expiry the subprocess is killed and every pending request rejects. */
+  requestTimeoutMs?: number
+  /** Largest stdout message line accepted before the subprocess is killed. */
+  maxMessageBytes?: number
+}
+
+type Pending = { resolve: (value: unknown) => void; reject: (error: Error) => void; timer: NodeJS.Timeout }
+
 export class StdioClient implements AppServerClient {
   readonly #process: ChildProcessWithoutNullStreams
-  readonly #pending = new Map<number, { resolve: (value: unknown) => void; reject: (error: Error) => void }>()
+  readonly #pending = new Map<number, Pending>()
+  readonly #requestTimeoutMs: number
   #id = 0
 
-  private constructor(subprocess: ChildProcessWithoutNullStreams) {
+  private constructor(subprocess: ChildProcessWithoutNullStreams, options: StdioClientOptions) {
     this.#process = subprocess
+    this.#requestTimeoutMs = options.requestTimeoutMs ?? APP_SERVER_REQUEST_TIMEOUT_MS
+    const maxMessageBytes = options.maxMessageBytes ?? APP_SERVER_MAX_MESSAGE_BYTES
+    let lineBytes = 0
+    subprocess.stdout.on('data', (chunk: Buffer) => {
+      const firstNewline = chunk.indexOf(10)
+      const completed = firstNewline === -1 ? 0 : lineBytes + firstNewline
+      lineBytes = firstNewline === -1 ? lineBytes + chunk.length : chunk.length - chunk.lastIndexOf(10) - 1
+      if (Math.max(completed, lineBytes) > maxMessageBytes) {
+        this.#abort(new Error(`codex app-server sent a message larger than ${maxMessageBytes} bytes`))
+      }
+    })
     const lines = createInterface({ input: subprocess.stdout })
     lines.on('line', (line) => {
       let message: JsonObject
       try {
         message = object(JSON.parse(line), 'app-server message')
       } catch (error) {
-        for (const pending of this.#pending.values()) pending.reject(error as Error)
-        this.#pending.clear()
+        this.#failAll(error as Error)
         return
       }
       if (typeof message.id !== 'number') return
       const pending = this.#pending.get(message.id)
       if (!pending) return
       this.#pending.delete(message.id)
+      clearTimeout(pending.timer)
       if (message.error) pending.reject(new Error(JSON.stringify(message.error)))
       else pending.resolve(message.result)
     })
     subprocess.stderr.on('data', (chunk) => globalThis.process.stderr.write(chunk))
-    subprocess.on('error', (error) => {
-      for (const pending of this.#pending.values()) pending.reject(error)
-      this.#pending.clear()
-    })
+    subprocess.on('error', (error) => this.#failAll(error))
     subprocess.on('exit', (code) => {
       if (code === 0) return
-      for (const pending of this.#pending.values()) pending.reject(new Error(`codex app-server exited with ${code}`))
-      this.#pending.clear()
+      this.#failAll(new Error(`codex app-server exited with ${code}`))
     })
   }
 
-  static async start(): Promise<StdioClient> {
-    const client = new StdioClient(spawn('codex', ['app-server'], { stdio: ['pipe', 'pipe', 'pipe'] }))
-    await client.request('initialize', {
-      clientInfo: { name: 'ki_housekeeping_codex', title: 'KI Codex Housekeeping', version: '1.0.0' },
-      capabilities: { experimentalApi: true, optOutNotificationMethods: ['item/agentMessage/delta'] }
-    })
+  static async start(options: StdioClientOptions = {}): Promise<StdioClient> {
+    const client = new StdioClient(spawn('codex', ['app-server'], { stdio: ['pipe', 'pipe', 'pipe'] }), options)
+    try {
+      await client.request('initialize', {
+        clientInfo: { name: 'ki_housekeeping_codex', title: 'KI Codex Housekeeping', version: '1.0.0' },
+        capabilities: { experimentalApi: true, optOutNotificationMethods: ['item/agentMessage/delta'] }
+      })
+    } catch (error) {
+      await client.close()
+      throw error
+    }
     client.#send({ method: 'initialized', params: {} })
     return client
   }
@@ -384,17 +416,37 @@ export class StdioClient implements AppServerClient {
     this.#process.stdin.write(`${JSON.stringify(message)}\n`)
   }
 
+  #failAll(error: Error): void {
+    for (const pending of this.#pending.values()) {
+      clearTimeout(pending.timer)
+      pending.reject(error)
+    }
+    this.#pending.clear()
+  }
+
+  /** Fail every pending request and kill the subprocess: it is wedged or misbehaving. */
+  #abort(error: Error): void {
+    this.#failAll(error)
+    this.#process.kill('SIGKILL')
+  }
+
   request(method: string, params: JsonObject): Promise<unknown> {
     const id = this.#id++
     return new Promise((resolve, reject) => {
-      this.#pending.set(id, { resolve, reject })
+      const timer = setTimeout(
+        () => this.#abort(new Error(`codex app-server did not answer ${method} within ${this.#requestTimeoutMs} ms`)),
+        this.#requestTimeoutMs
+      )
+      this.#pending.set(id, { resolve, reject, timer })
       this.#send({ method, id, params })
     })
   }
 
   async close(): Promise<void> {
+    if (this.#process.exitCode !== null || this.#process.signalCode !== null) return
+    const exited = new Promise<void>((resolve) => this.#process.once('exit', () => resolve()))
     this.#process.kill()
-    await new Promise<void>((resolve) => this.#process.once('exit', () => resolve()))
+    await exited
   }
 }
 
@@ -406,8 +458,9 @@ const value = (args: readonly string[], flag: string): string | undefined => {
 const values = (args: readonly string[], flag: string): string[] =>
   args.flatMap((arg, index) => (arg === flag && args[index + 1] ? [args[index + 1] as string] : []))
 
-export const installedCodexVersion = (): string => {
-  const result = spawnSync('codex', ['--version'], { encoding: 'utf8' })
+export const installedCodexVersion = (timeoutMs = CODEX_VERSION_TIMEOUT_MS): string => {
+  const result = spawnSync('codex', ['--version'], { encoding: 'utf8', timeout: timeoutMs, maxBuffer: 64 * 1024 })
+  if (result.error) throw new Error(`codex --version failed: ${result.error.message}`)
   if (result.status !== 0) throw new Error(result.stderr.trim() || 'codex --version failed')
   return result.stdout.trim()
 }
