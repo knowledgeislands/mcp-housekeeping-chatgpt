@@ -8,7 +8,7 @@ The Codex adapter exposes `codex_sessions_discover`, `codex_sessions_list`, `cod
 
 Knowledge Islands repository staging belongs to `ki acquire import --adapter chatgpt` or `ki acquire import --adapter codex`. This MCP never writes KI state, archives, or deletes source sessions. Durable learning goes through reviewed repository guidance or KB intake.
 
-For setup and use, start with the [user guides](docs/guides/user/README.md). For source maintenance and fixture testing, use the [developer guides](docs/guides/developer/README.md). The [guide index](docs/guides/README.md) routes both audiences.
+For setup and use, start with the [user guides](docs/guides/user/README.md). For source maintenance and fixture testing, use the [developer guides](docs/guides/developer/README.md). The [guide index](docs/guides/_index.md) routes both audiences.
 
 The MCP registrations are read-only. The separately exported `./codex` library includes a guarded deletion helper; see the developer guide before using that export.
 
