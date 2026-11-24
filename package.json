@@ -52,11 +52,15 @@
   ],
   "homepage": "https://github.com/knowledgeislands/mcp-housekeeping-chatgpt#readme",
   "keywords": [
+    "audit",
+    "bun",
     "chatgpt",
     "housekeeping",
     "knowledge-islands",
     "mcp",
-    "sessions"
+    "model-context-protocol",
+    "sessions",
+    "typescript"
   ],
   "license": "MIT",
   "lint-staged": {
